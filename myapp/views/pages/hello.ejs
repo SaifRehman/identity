@@ -1,0 +1,77 @@
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethjs@0.3.0/dist/ethjs.min.js"></script>
+</head>
+
+<body>
+    <button id="change">change</button>
+    <script>
+        var $result = $('#result');
+        $('#change').click(function () {
+            console.log('changed')
+            function toHex(s) {
+                var hex = '';
+                for (var i = 0; i < s.length; i++) { hex += '' + s.charCodeAt(i).toString(16); }
+                return `0x${hex}`
+            }
+            var data = toHex('i am a string');
+
+            var provider;
+            if (window.web3.currentProvider) {
+                provider = window.web3.currentProvider;
+            } else {
+                provider = new web3.providers.HttpProvider("https://ropsten.infura.io/");
+            }
+            var web3 = new Web3(provider);
+            web3.eth.sign("0xa13f04742157488fc28d36249e7daf436096e218", data, function (err, result) {
+                    if (err) {
+                        console.log('errr',err)
+                    }
+                    if (result) {
+                        console.log('result',result)
+                    }
+                })
+            // if (typeof web3 !== 'undefined') {
+            //     // Use Mist/MetaMask's provider
+            //     var web3 = new Web3(web3.currentProvider);
+            //     console.log(web3);
+            //     console.log(web3.eth.accounts[0]);
+            //     web3.providers.sendAsync({ id: 1, method: 'personal_sign', params: [web3.eth.accounts[0], data] },
+            //         function (err, result) {
+            //             let sig = result.result;
+            //             console.log(sig);
+            //             console.log(web3.eth.accounts[0]);
+            //             // dispatch(exchange.authenticate(sig, user))
+            //         })
+            // } else {
+            //     console.log('No web3? You should consider trying MetaMask!')
+            //     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
+            //     var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+            //     console.log(web3);
+            //     console.log(web3.eth.accounts[0])
+            //     console.log(web3.sha3("text"))
+                // var sig = web3.eth.sign(web3.eth.accounts[0], "text", function (err, result) {
+                //     if (err) {
+                //         console.log('errr',err)
+                //     }
+                //     if (result) {
+                //         console.log('result',result)
+                //     }
+                // })
+            //     var x = web3.eth.sign(web3.eth.accounts[0], "text")
+            //     console.log(x);
+            //     // web3.send({ id: 1, method: 'personal_sign', params: [web3.eth.accounts[0], data] },
+            //     //     function (err, result) {
+            //     //         let sig = result.result;
+            //     //         console.log(sig);
+            //     //         console.log(web3.eth.accounts[0]);
+            //     //         // dispatch(exchange.authenticate(sig, user))
+            //     //     })
+            // }
+        });
+    </script>
+</body>
+
+</html>
